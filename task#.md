@@ -264,7 +264,7 @@ rates
 - Для відображення курсів використовуємо компонент `<RatesList/>`
 
 ```bash
-{fileredRates.length > 0 && <RatesList rates={fileredRates} />}
+{filteredRates.length > 0 && <RatesList rates={filteredRates} />}
 ```
 
 ## 7 Крок
