@@ -12,6 +12,12 @@ const slice = createSlice({
     exchangeInfo: null,
     isLoading: false,
     isError: null,
+    rates: [],
+  },
+  reducers: {
+    setBaseCurrency(state, action) {
+      state.baseCurrency = action.payload;
+    },
   },
   extraReducers: builder =>
     builder
@@ -50,4 +56,5 @@ const slice = createSlice({
       }),
 });
 
+export const { setBaseCurrency } = slice.actions;
 export const currencyReducer = slice.reducer;

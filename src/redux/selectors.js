@@ -10,6 +10,8 @@ export const selectRates = state => state.currency.rates;
 export const selectFilteredRates = createSelector(
   [selectRates, selectBaseCurrency],
   (rates, baseCurrency) => {
+    console.log('rates in selectFilteredRates: ', rates);
+
     return rates
       .filter(([key]) => key !== baseCurrency)
       .map(([key, value]) => ({ key, value: (1 / value).toFixed(2) }));

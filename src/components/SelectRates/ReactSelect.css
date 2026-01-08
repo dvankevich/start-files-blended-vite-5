@@ -21,12 +21,14 @@ div .react-select__single-value {
 }
 
 div .react-select__menu {
-  background-color: transparent;
+  /* background-color: transparent; */
+  background-color: var(--color-primary);
 }
 
 .react-select__menu .react-select__option--is-focused {
   background-color: var(--color-primary);
 }
+
 .react-select__menu .react-select__option--is-selected {
   background-color: var(--color-accent);
 }
