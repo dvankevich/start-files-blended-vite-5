@@ -16,22 +16,34 @@ const Home = () => {
   const isLoading = useSelector(selectIsLoading);
   const exchangeInfo = useSelector(selectExcangeInfo);
 
+  const renderContent = () => {
+    if (isLoading) {
+      return <Loader />;
+    }
+
+    if (isError) {
+      return (
+        <Heading
+          error
+          title="Something went wrong...😐 Check the data validity and try again!"
+        />
+      );
+    }
+
+    if (!exchangeInfo) {
+      return (
+        <Heading info title="What currencies do you want to exchange?🙂" />
+      );
+    }
+
+    return <ExchangeInfo {...exchangeInfo} />;
+  };
+
   return (
     <Section>
       <Container>
         <ExchangeForm />
-        {!exchangeInfo && !isError && (
-          <Heading info title="What currencies do you want to exchange?🙂" />
-        )}
-        {exchangeInfo && <ExchangeInfo {...exchangeInfo} />}
-
-        {isError && (
-          <Heading
-            error
-            title="Something went wrong...😐 Check the data validity and try again!"
-          />
-        )}
-        {isLoading && <Loader />}
+        {renderContent()}
       </Container>
     </Section>
   );
