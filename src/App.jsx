@@ -1,10 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Rates from './pages/Rates';
+import { Suspense, lazy } from 'react';
+const Home = lazy(() => import('./pages/Home'));
+const Rates = lazy(() => import('./pages/Rates'));
+// const Header = lazy(() => import('./components/Header/Header'));
 import Header from './components/Header/Header';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchBaseCurrency } from './redux/operations';
+import { setBaseCurrency } from './redux/currencySlice';
+
+import Loader from './components/Loader/Loader';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -16,17 +21,12 @@ export const App = () => {
     };
 
     function success(pos) {
-      //const crd = pos.coords;
       dispatch(fetchBaseCurrency(pos.coords));
-      // console.log('Your current position is:');
-      // console.log(`Latitude : ${crd.latitude}`);
-      // console.log(`Longitude: ${crd.longitude}`);
-      // console.log(`More or less ${crd.accuracy} meters.`);
-      // console.log(crd);
     }
 
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
+      dispatch(setBaseCurrency('USD'));
     }
 
     navigator.geolocation.getCurrentPosition(success, error, options);
@@ -34,11 +34,13 @@ export const App = () => {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/rates" element={<Rates />} />
-        <Route path="*" element={<Navigate to={'/'} />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/rates" element={<Rates />} />
+          <Route path="*" element={<Navigate to={'/'} />} />
+        </Routes>
+      </Suspense>
     </>
   );
 };
