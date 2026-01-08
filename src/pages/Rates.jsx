@@ -10,10 +10,12 @@ import {
   selectFilteredRates,
   selectIsError,
   selectIsLoading,
+  selectRates,
 } from '../redux/selectors';
 import { fetchLatestRates } from '../redux/operations';
 import RatesList from '../components/RatesList/RatesList';
 import Loader from '../components/Loader/Loader';
+import Filter from '../components/Filter/Filter';
 
 const Rates = () => {
   const isError = useSelector(selectIsError);
@@ -21,6 +23,7 @@ const Rates = () => {
   const baseCurrency = useSelector(selectBaseCurrency);
   const filteredRates = useSelector(selectFilteredRates);
   const dispatch = useDispatch();
+  const rates = useSelector(selectRates);
 
   useEffect(() => {
     dispatch(fetchLatestRates(baseCurrency));
@@ -40,7 +43,12 @@ const Rates = () => {
             />
           }
         />
-        {filteredRates.length > 0 && <RatesList rates={filteredRates} />}
+        {rates.length > 0 && <Filter />}
+        {filteredRates.length > 0 ? (
+          <RatesList rates={filteredRates} />
+        ) : (
+          <Heading info title="We cannot find this currency!" />
+        )}
         {isError && (
           <Heading
             error
